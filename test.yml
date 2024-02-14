@@ -1,0 +1,16 @@
+- name: Config Vim with plugins
+  hosts: local
+  user: root
+  gather_facts: no
+  become: no
+
+  tasks:
+    - name: Apply tags to tasks within included file
+      include_tasks: mysql/tasks/main.yml
+    
+    - ansible.builtin.debug:
+        msg: task10
+
+
+
+

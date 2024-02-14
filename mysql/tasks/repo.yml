@@ -1,0 +1,17 @@
+---
+# Installation tasks for Ubuntu
+# https://www.percona.com/doc/percona-server/5.7/installation/apt_repo.html
+# https://www.percona.com/doc/percona-server/8.0/installation/apt_repo.html
+
+- name: Install gnupg
+  apt:
+    name: gnupg2
+    update_cache: yes
+
+- name: "Install percona-release package"
+  apt:
+    deb: "https://repo.percona.com/apt/percona-release_latest.generic_all.deb"
+
+- name: "Update apt cache"
+  apt:
+    update_cache: yes

@@ -1,0 +1,8 @@
+---
+- include_tasks: repo.yml
+  tags: check
+- include_tasks: install.yml
+  tags: install
+ # when:
+ #     - ansible_facts['distribution'] == "Ubuntu"
+ #     - ansible_facts['distribution_major_version'] == "22"

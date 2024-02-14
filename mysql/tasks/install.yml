@@ -1,0 +1,35 @@
+# https://www.percona.com/doc/percona-server/LATEST/installation/apt_repo.html
+- name: "Enable Percona repository (Percona version >= 8)"
+  command: "percona-release setup ps80"
+  when: 8|int >= 8
+  changed_when: False     # TODO: check for task idempotency
+
+- name: "Install percona packages and dependencies on Ubuntu (Percona version < 8)"
+  apt:
+    name:
+      - "percona-server-server"
+      - "percona-server-client"
+      - "percona-toolkit"
+    state: "present"
+  when: 8|int < 8
+
+- name: "Install | configure debconf for version 8.0 (Use Legacy Authentication Method)"
+  debconf:
+    name: 'percona-server-server'
+    question: 'percona-server-server/default-auth-override'
+    value: 'Use Legacy Authentication Method (Retain MySQL 5.x Compatibility)'
+    vtype: select
+  changed_when: false
+  when:
+    - 8|int >= 8
+    - mysql_default_authentication_plugin is defined
+    - mysql_default_authentication_plugin == "Kingmaker1pacificrim2puzzle3mp4"
+
+- name: "Install percona packages and dependencies on Ubuntu (Percona version >= 8)"
+  apt:
+    name:
+      - "percona-server-server*"
+      - "percona-server-client*"
+      - "percona-toolkit"
+    state: "present"
+  when: 8|int >= 8

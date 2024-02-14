@@ -1,0 +1,24 @@
+- name: My first play
+  hosts: local
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+
+   - name: Print message
+     ansible.builtin.debug:
+      msg: Hello world
+
+   - name: gather os specific variables
+     #command: /usr/bin/netstat -ntpl
+     shell: du -a /home | sort -n -r | head -n 5
+     register: ps
+   - debug: var=ps.stdout_lines
+     when:
+      - ansible_facts['distribution'] == "Ubuntu"
+      - ansible_facts['distribution_major_version'] == "21"
+   - name: This command will change the working directory to somedir/
+     ansible.builtin.shell:
+        cmd: ls -l 
+        chdir: /www/
+     register: ps1
+   - debug: var=ps1.stdout_lines
